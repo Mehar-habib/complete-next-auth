@@ -41,3 +41,12 @@ model Account {
 
   @@unique([provider, providerAccountId]) // Ensures that a user cannot have duplicate accounts for the same provider
 }
+
+model verificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}

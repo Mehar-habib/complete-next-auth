@@ -1,18 +1,18 @@
 "use client";
 
-import { Card, CardFooter, CardHeader } from "../ui/card";
-import BackButton from "./back-button";
-import Header from "./header";
+import { FaExclamationCircle } from "react-icons/fa";
+import CardWrapper from "./card-wrapper";
 
 export default function ErrorCard() {
   return (
-    <Card className="w-[450px] shadow-md">
-      <CardHeader>
-        <Header label="Oops, something went wrong!" />
-      </CardHeader>
-      <CardFooter>
-        <BackButton href="/auth/login" label="Back to login" />
-      </CardFooter>
-    </Card>
+    <CardWrapper
+      headerLabel="Oops, something went wrong!"
+      backButtonLabel="Back to login"
+      backButtonHref="/auth/login"
+    >
+      <div className="w-full flex flex-col items-center">
+        <FaExclamationCircle className="text-destructive h-5 w-5" />
+      </div>
+    </CardWrapper>
   );
 }

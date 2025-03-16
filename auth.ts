@@ -19,7 +19,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       });
     },
   },
+
   callbacks: {
+    async signIn({ user, account }) {
+      // Allow OAuth sign-in without requiring email verification
+      if (account?.provider !== "credentials") return true;
+
+      // Ensure user ID is defined before querying the database
+      if (!user.id) return false;
+
+      // Fetch the user from the database using their ID
+      const existingUser = await getUserById(user.id);
+
+      // Prevent sign-in if the user's email is not verified
+      if (!existingUser?.emailVerified) return false;
+
+      // TODO: Implement two-factor authentication (2FA) for added security
+
+      return true; // Allow sign-in if email is verified
+    },
     async session({ session, token }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;

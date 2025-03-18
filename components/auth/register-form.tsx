@@ -15,9 +15,9 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
-import SuccessError from "../form-success";
 import { useEffect, useState, useTransition } from "react";
 import { register } from "@/actions/register";
+import FormSuccess from "../form-success";
 
 export default function RegisterForm() {
   const [error, setError] = useState<string | undefined>("");
@@ -123,7 +123,7 @@ export default function RegisterForm() {
             />
           </div>
           <FormError message={error} />
-          <SuccessError message={success} />
+          <FormSuccess message={success} />
           <Button type="submit" className="w-full " disabled={isPending}>
             Create an account
           </Button>

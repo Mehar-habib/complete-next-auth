@@ -47,7 +47,7 @@ export default function RegisterForm() {
       const timer = setTimeout(() => {
         setError("");
         setSuccess("");
-      }, 2000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [error, success]);

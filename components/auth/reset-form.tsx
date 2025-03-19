@@ -14,7 +14,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
-import { login } from "@/actions/login";
+import { reset } from "@/actions/reset";
 import { useEffect, useState, useTransition } from "react";
 import FormSuccess from "../form-success";
 import { ResetSchema } from "@/schemas";
@@ -33,14 +33,12 @@ export default function ResetForm() {
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     setError("");
     setSuccess("");
-    console.log(values);
-    // startTransition(() => {
-    //   login(values).then((data) => {
-    //     setError(data?.error);
-    //     // TODO: add when we add 2FA
-    //     setSuccess(data?.success);
-    //   });
-    // });
+    startTransition(() => {
+      reset(values).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+      });
+    });
   };
   useEffect(() => {
     if (error || success) {

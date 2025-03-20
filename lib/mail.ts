@@ -2,6 +2,30 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "Your 2FA Verification Code",
+    html: `
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; background-color: #f4f8ff; border-radius: 10px;">
+          <h2 style="color: #1E3A8A; text-align: center;">Two-Factor Authentication (2FA)</h2>
+          <p style="color: #333; font-size: 16px; text-align: center;">
+            Use the code below to complete your sign-in process.
+          </p>
+          <div style="text-align: center; margin: 20px 0;">
+            <span style="font-size: 24px; font-weight: bold; color: #1E3A8A; background-color: #E0E7FF; padding: 10px 20px; border-radius: 5px; display: inline-block;">
+              ${token}
+            </span>
+          </div>
+          <p style="color: #666; font-size: 14px; text-align: center;">
+            This code will expire in 15 minutes. If you did not request this, please ignore this email.
+          </p>
+        </div>
+      `,
+  });
+};
+
 export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `http://localhost:3000/auth/new-password?token=${token}`;
   await resend.emails.send({

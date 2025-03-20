@@ -37,6 +37,7 @@ export default function LoginForm() {
     defaultValues: {
       email: "",
       password: "",
+      code: "",
     },
   });
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {

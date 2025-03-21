@@ -1,8 +1,9 @@
+import { UserInfo } from "@/components/user-info";
 import { currentUser } from "@/lib/auth";
 
 const ServerPage = async () => {
   const user = await currentUser();
-  return <div>{JSON.stringify(user)}</div>;
+  return <UserInfo label="💻 Server Components" user={user} />;
 };
 
 export default ServerPage;

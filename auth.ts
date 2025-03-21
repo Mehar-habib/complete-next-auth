@@ -56,6 +56,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
       }
+      if (session.user) {
+        session.user.isTowFactorEnabled = token.isTowFactorEnabled as boolean;
+      }
       return session;
     },
 
@@ -66,6 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.isTowFactorEnabled = existingUser.isTowFactorEnabled;
       return token;
     },
   },

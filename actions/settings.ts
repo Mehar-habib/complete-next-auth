@@ -6,6 +6,7 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";
 import { SettingsSchema } from "@/schemas";
 import * as z from "zod";
+import bcrypt from "bcryptjs";
 
 export const settings = async (values: z.infer<typeof SettingsSchema>) => {
   // Retrieve the currently authenticated user
@@ -53,6 +54,29 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
 
     // Inform the user to verify their new email
     return { success: "Please check your email to verify your account." };
+  }
+
+  // Check if the user is trying to update their password
+  if (values.password && values.newPassword && dbUser.password) {
+    // Compare the provided current password with the stored hashed password
+    const passwordsMatch = await bcrypt.compare(
+      values.password,
+      dbUser.password
+    );
+
+    // If the provided password is incorrect, return an error message
+    if (!passwordsMatch) {
+      return { error: "Invalid password!" };
+    }
+
+    // Hash the new password before saving it in the database
+    const hashedPassword = await bcrypt.hash(values.newPassword, 10);
+
+    // Replace the old password with the newly hashed password
+    values.password = hashedPassword;
+
+    // Remove the new password field to prevent unnecessary storage
+    values.newPassword = undefined;
   }
 
   await db.user.update({

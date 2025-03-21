@@ -47,6 +47,7 @@ const SettingsPage = () => {
       password: undefined,
       newPassword: undefined,
       role: user?.role || undefined,
+      isTowFactorEnabled: user?.isTowFactorEnabled || undefined,
     },
   });
 
